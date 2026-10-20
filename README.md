@@ -38,45 +38,35 @@ The application also incorporates Grad-CAM to help visualize image regions that 
 
 ---
 
-## Screenshots
+## 🖥️ Screenshots
 
 ### 1. Home Page
 
-The main interface for accessing the DeepTrace application.
+![DeepTrace Home Page](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceHomePage.JPG)
 
-![DeepTrace Home Page](docs/images/DeepTraceHomePage.JPG)
+### 2. Sign Up Page
 
-### 2. User Authentication
+![DeepTrace Sign Up Page](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceSignupPage.JPG)
 
-Registration and login interfaces for users.
+### 3. Sign In Page
 
-![DeepTrace Sign Up Page](docs/images/DeepTraceSignupPage.JPG)
+![DeepTrace Sign In Page](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceSigninPage.JPG)
 
-![DeepTrace Sign In Page](docs/images/DeepTraceSigninPage.JPG)
+### 4. Analysis Steps
 
-### 3. Video Analysis Steps
+![DeepTrace Analysis Steps](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceStepsPage.JPG)
 
-An overview of the video analysis workflow.
+### 5. Analyze Video Page
 
-![DeepTrace Analysis Steps](docs/images/DeepTraceStepsPage.JPG)
+![DeepTrace Analyze Page](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceAnalyzePage.JPG)
 
-### 4. Analysis Page
+### 6. Analysis Output
 
-The interface for initiating and viewing video analysis.
+![DeepTrace Output Page](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceOutputPage.JPG)
 
-![DeepTrace Analysis Page](docs/images/DeepTraceAnalyzePage.JPG)
+### 7. Command-Line Output
 
-### 5. Analysis Output
-
-The interface displaying the analysis results.
-
-![DeepTrace Output Page](docs/images/DeepTraceOutputPage.JPG)
-
-### 6. Command-Line Output
-
-A view of the analysis output from the command-line workflow.
-
-![DeepTrace Command Output](docs/images/DeepTraceCmdOutputPage.JPG)
+![DeepTrace Command Output](https://raw.githubusercontent.com/niranjanabaalu/DeepTrace/main/docs/images/DeepTraceCmdOutputPage.JPG)
 
 ---
 
