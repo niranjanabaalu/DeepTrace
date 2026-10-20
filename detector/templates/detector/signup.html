@@ -1,0 +1,72 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | DeepTrace</title>
+    <link rel="stylesheet" href="{% static 'detector/css/auth.css' %}">
+</head>
+<body>
+<div class="auth-layout">
+    <section class="brand-panel">
+        <img src="{% static 'detector/images/logo.png' %}"
+             alt="DeepTrace Logo" class="brand-logo">
+        <p class="eyebrow">WELCOME TO DEEPTRACE</p>
+        <h1>Trust what<br>you can verify.</h1>
+        <p class="brand-description">
+            Create your account and explore explainable AI-based
+            deepfake detection.
+        </p>
+        <span class="brand-tag">TRUTH, EXPLAINED.</span>
+    </section>
+
+    <main class="form-panel">
+        <div class="auth-card">
+            <p class="eyebrow">GET STARTED</p>
+            <h2>Create account</h2>
+            <p class="form-subtitle">Join DeepTrace today.</p>
+
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username"
+                       autocomplete="username" required>
+                {% if form.username.errors %}
+                    <div class="form-errors">{{ form.username.errors }}</div>
+                {% endif %}
+
+                <label for="id_password1">Password</label>
+                <input type="password" name="password1" id="id_password1"
+                       autocomplete="new-password" required>
+                {% if form.password1.errors %}
+                    <div class="form-errors">{{ form.password1.errors }}</div>
+                {% endif %}
+
+                <label for="id_password2">Confirm password</label>
+                <input type="password" name="password2" id="id_password2"
+                       autocomplete="new-password" required>
+                {% if form.password2.errors %}
+                    <div class="form-errors">{{ form.password2.errors }}</div>
+                {% endif %}
+
+                <button type="submit" class="auth-button">Create Account</button>
+            </form>
+
+            <p class="switch-text">
+                Already have an account?
+                <a href="{% url 'signin' %}">Sign in</a>
+            </p>
+
+            <a href="/" class="back-link">← Back to DeepTrace</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>

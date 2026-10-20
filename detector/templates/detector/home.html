@@ -1,0 +1,2076 @@
+
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DeepTrace | AI Video Intelligence</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+
+            --bg: #10090b;
+
+            --panel: rgba(24, 10, 15, 0.76);
+
+            --wine: #8f1028;
+
+            --red: #bd203b;
+
+            --deep-red: #4d0b19;
+
+            --sage: #626d4b;
+
+            --cream: #fff5ef;
+
+            --muted: #e0cdd0;
+
+            --border: rgba(231, 158, 172, 0.28);
+
+            --green: #b8d49c;
+
+            --danger: #ff8190;
+
+        }
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: "DM Sans", Arial, sans-serif;
+
+            color: var(--cream);
+
+            /* Background image loaded from Django static files */
+
+            background-color: #100508;
+
+            background-image:
+
+                linear-gradient(
+
+                    rgba(10, 3, 6, 0.34),
+
+                    rgba(10, 3, 6, 0.48)
+
+                ),
+
+                url("{% static 'detector/images/floral-background.png' %}");
+
+            background-size: cover;
+
+            background-position: center center;
+
+            background-repeat: no-repeat;
+
+            background-attachment: fixed;
+
+        }
+
+        button, input {
+
+            font: inherit;
+
+        }
+
+        button {
+
+            -webkit-tap-highlight-color: transparent;
+
+        }
+
+        /* Navigation */
+
+        .navbar {
+
+            min-height: 78px;
+
+            padding: 16px 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: rgba(15, 5, 9, 0.76);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            position: relative;
+
+            z-index: 10;
+
+        }
+
+        .brand {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: var(--cream);
+
+            text-decoration: none;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            flex-shrink: 0;
+
+        }
+
+        .brand-logo {
+
+            display: block;
+
+            width: 46px;
+
+            height: 46px;
+
+            object-fit: cover;
+
+            object-position: center;
+
+            border-radius: 50%;
+
+            flex-shrink: 0;
+
+        }
+
+        .nav-tag {
+
+            color: #f1cbd3;
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+
+            text-align: right;
+
+            text-transform: uppercase;
+
+        }
+
+.signin-btn {
+
+    display: inline-block;
+
+    padding: 10px 24px;
+
+    color: #fff7f3;
+
+    background: linear-gradient(110deg, #6f2038, #9f435a);
+
+    border: 1px solid rgba(255, 231, 232, 0.25);
+
+    border-radius: 9px;
+
+    font-family: 'DM Sans', sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: transform 0.2s ease, filter 0.2s ease;
+
+}
+
+.signin-btn:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.15);
+
+}
+
+.profile-initial {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 231, 232, 0.45);
+    background: linear-gradient(135deg, #6f2038, #c06a7d);
+    color: #fff7f3;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Keep profile and logout together at the right */
+.nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+    margin-left: auto;
+}
+
+/* Prevent logout form from adding unwanted spacing */
+.logout-form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn {
+    padding: 9px 18px;
+    border: 1px solid rgba(231, 158, 172, 0.4);
+    border-radius: 8px;
+    background: transparent;
+    color: #fff5ef;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: #8f1028;
+}
+
+        /* Main layout */
+
+        main {
+
+            max-width: 1180px;
+
+            margin: auto;
+
+            padding: 50px 24px 75px;
+
+        }
+
+        /* Translucent glass cards */
+
+        .glass-card,
+
+        .panel,
+
+        .step-card {
+
+            background: rgba(25, 10, 15, 0.77);
+
+            border: 1px solid rgba(231, 158, 172, 0.30);
+
+            border-radius: 22px;
+
+            box-shadow:
+
+                0 18px 55px rgba(0, 0, 0, 0.32),
+
+                inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+            backdrop-filter: blur(14px);
+
+            -webkit-backdrop-filter: blur(14px);
+
+        }
+
+        /* Hero has its own separate card */
+
+        .hero {
+
+            text-align: center;
+
+            max-width: 900px;
+
+            margin: 0 auto 28px;
+
+            padding: 38px 28px 32px;
+
+        }
+
+        .eyebrow {
+
+            color: #f09aaa;
+
+            text-transform: uppercase;
+
+            letter-spacing: 4px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+        h1, h2, h3, p {
+
+            margin-top: 0;
+
+        }
+
+        .hero h1 {
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: clamp(48px, 7vw, 76px);
+
+            font-weight: 500;
+
+            line-height: 1;
+
+            margin: 22px 0;
+
+            letter-spacing: -1px;
+
+            text-shadow: 0 3px 25px rgba(0, 0, 0, 0.4);
+
+        }
+
+        .hero h1 span {
+
+            color: #ed8196;
+
+            font-style: italic;
+
+        }
+
+        .hero-description {
+
+            max-width: 590px;
+
+            margin: auto;
+
+            line-height: 1.9;
+
+            color: #f0dfe2;
+
+            font-size: 14px;
+
+        }
+
+        .divider-flower {
+
+            color: #e45b79;
+
+            font-size: 24px;
+
+            margin-top: 20px;
+
+        }
+
+        .main-grid {
+
+            display: grid;
+
+            grid-template-columns: 0.95fr 1.05fr;
+
+            gap: 22px;
+
+            align-items: start;
+
+        }
+
+        .panel {
+
+            padding: 30px;
+
+            min-width: 0;
+
+        }
+
+        .section-heading {
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: 34px;
+
+            font-weight: 600;
+
+            margin: 10px 0;
+
+            color: #fff2ec;
+
+        }
+
+        .section-description {
+
+            font-size: 13px;
+
+            color: #e0cdd0;
+
+            line-height: 1.9;
+
+            margin-bottom: 24px;
+
+        }
+
+        /* Upload card */
+
+        .upload-zone {
+
+            position: relative;
+
+            border: 1px dashed rgba(241, 126, 151, 0.65);
+
+            border-radius: 16px;
+
+            padding: 29px 18px;
+
+            background: rgba(93, 10, 30, 0.28);
+
+            text-align: center;
+
+        }
+
+        .upload-symbol {
+
+            width: 58px;
+
+            height: 58px;
+
+            margin: 0 auto 15px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(145deg, #a21a3a, #400a18);
+
+            border: 1px solid rgba(255, 194, 207, 0.24);
+
+            font-size: 25px;
+
+            color: #fff0f1;
+
+        }
+
+        .upload-zone h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .upload-zone p {
+
+            color: #e0cdd0;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .file-input {
+
+            display: block;
+
+            width: 100%;
+
+            margin: 18px 0;
+
+            color: #f0dfe2;
+
+            font-size: 12px;
+
+        }
+
+        .file-input::file-selector-button {
+
+            background: rgba(73, 25, 37, 0.9);
+
+            color: var(--cream);
+
+            border: 1px solid var(--border);
+
+            padding: 10px 13px;
+
+            border-radius: 8px;
+
+            margin-right: 10px;
+
+            cursor: pointer;
+
+        }
+
+        .primary-button {
+
+            width: 100%;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 15px 20px;
+
+            margin-top: 14px;
+
+            background: linear-gradient(100deg, #791027, #c32144);
+
+            color: #fff5f2;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: transform 0.2s, filter 0.2s;
+
+        }
+
+        .primary-button:hover {
+
+            transform: translateY(-2px);
+
+            filter: brightness(1.15);
+
+        }
+
+        .primary-button:disabled {
+
+            opacity: 0.65;
+
+            cursor: wait;
+
+            transform: none;
+
+        }
+
+        .message {
+
+            padding: 12px 14px;
+
+            margin: 0 0 18px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .error-message {
+
+            background: rgba(163, 30, 53, 0.30);
+
+            color: #ffc0c8;
+
+            border: 1px solid rgba(255, 129, 144, 0.4);
+
+        }
+
+        .success-message {
+
+            background: rgba(98, 109, 75, 0.27);
+
+            color: #e1f0cb;
+
+            border: 1px solid rgba(169, 189, 145, 0.35);
+
+        }
+
+        .privacy-note {
+
+            font-size: 11px;
+
+            color: #d5bec3;
+
+            line-height: 1.8;
+
+            margin: 18px 0 0;
+
+        }
+
+        /* Result content */
+
+        .result-panel {
+
+            margin-top: 26px;
+
+            animation: appear 0.5s ease both;
+
+        }
+
+        @keyframes appear {
+
+            from { opacity: 0; transform: translateY(12px); }
+
+            to { opacity: 1; transform: translateY(0); }
+
+        }
+
+        .result-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 22px;
+
+        }
+
+        .status-pill {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 12px;
+
+            border-radius: 50px;
+
+            background: rgba(98, 109, 75, 0.32);
+
+            color: #d4eeb9;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 700;
+
+        }
+
+        .status-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+        }
+
+        .verdict {
+
+            text-align: center;
+
+            border-radius: 17px;
+
+            padding: 25px 15px;
+
+            background: rgba(77, 91, 58, 0.28);
+
+            border: 1px solid rgba(169, 189, 145, 0.32);
+
+        }
+
+        .verdict.fake {
+
+            background: rgba(113, 12, 34, 0.36);
+
+            border-color: rgba(255, 129, 144, 0.35);
+
+        }
+
+        .verdict-symbol {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .verdict h2 {
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: 39px;
+
+            font-weight: 600;
+
+            margin: 0 0 8px;
+
+            color: var(--green);
+
+        }
+
+        .verdict.fake h2 {
+
+            color: var(--danger);
+
+        }
+
+        .verdict p {
+
+            font-size: 12px;
+
+            color: #f0dfe2;
+
+            line-height: 1.8;
+
+            margin: 0;
+
+        }
+
+        .metric-title {
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            color: #f0cbd2;
+
+            margin: 26px 0 18px;
+
+        }
+
+        .score-row {
+
+            margin-bottom: 20px;
+
+        }
+
+        .score-label {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            font-size: 12px;
+
+            margin-bottom: 9px;
+
+        }
+
+        .score-label span:first-child {
+
+            color: #e0cdd0;
+
+        }
+
+        .score-label strong {
+
+            color: var(--cream);
+
+        }
+
+        .progress-track {
+
+            height: 7px;
+
+            border-radius: 50px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            overflow: hidden;
+
+        }
+
+        .progress-fill {
+
+            height: 100%;
+
+            width: 0;
+
+            border-radius: inherit;
+
+            transition: width 0.8s ease;
+
+        }
+
+        .fake-fill {
+
+            background: linear-gradient(90deg, #8a102b, #f05b78);
+
+        }
+
+        .real-fill {
+
+            background: linear-gradient(90deg, #586e42, #b8d99a);
+
+        }
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+        }
+
+        .stat-card {
+
+            padding: 17px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            background: rgba(255, 255, 255, 0.055);
+
+            min-width: 0;
+
+        }
+
+        .stat-card span {
+
+            display: block;
+
+            color: #e0cdd0;
+
+            font-size: 11px;
+
+            margin-bottom: 9px;
+
+        }
+
+        .stat-card strong {
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: 30px;
+
+            font-weight: 600;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        .report-details {
+
+            margin-top: 22px;
+
+            border-top: 1px solid var(--border);
+
+            padding-top: 17px;
+
+        }
+
+        .report-details summary {
+
+            color: #f0a6b4;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+        }
+
+        .report-details pre {
+
+            margin-top: 15px;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            background: rgba(10, 5, 7, 0.85);
+
+            color: #f0dfe2;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+
+        }
+
+        /* Separate information cards */
+
+        .how-it-works {
+
+            margin-top: 22px;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+
+            gap: 16px;
+
+        }
+
+        .step-card {
+
+            padding: 22px;
+
+        }
+
+        .step-number {
+
+            color: #f07891;
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: 30px;
+
+        }
+
+        .step-card h3 {
+
+            font-size: 13px;
+
+            margin: 9px 0;
+
+        }
+
+        .step-card p {
+
+            color: #e0cdd0;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+            margin: 0;
+
+        }
+
+        footer {
+
+            text-align: center;
+
+            padding: 25px;
+
+            border-top: 1px solid var(--border);
+
+            background: rgba(12, 4, 7, 0.75);
+
+            backdrop-filter: blur(10px);
+
+            -webkit-backdrop-filter: blur(10px);
+
+            color: #e0cdd0;
+
+            font-size: 11px;
+
+            line-height: 1.9;
+
+        }
+
+        /* Centered terminal report modal */
+
+        .terminal-toggle-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 22px;
+            padding: 12px 17px;
+            border: 1px solid rgba(255, 157, 177, 0.30);
+            border-radius: 10px;
+            background: linear-gradient(110deg, #6f2038, #9f435a);
+            color: #fff1f2;
+            font-family: "DM Sans", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .terminal-toggle-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.12);
+        }
+
+        .terminal-toggle-button:focus-visible {
+            outline: 2px solid #f0a6b4;
+            outline-offset: 3px;
+        }
+
+        .report-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 22px;
+
+            background: rgba(5, 2, 4, 0.57);
+
+            backdrop-filter: blur(12px);
+
+            -webkit-backdrop-filter: blur(12px);
+
+        }
+
+        .report-modal[hidden] {
+
+            display: none;
+
+        }
+
+        .report-modal-card {
+
+            position: relative;
+
+            width: min(680px, 100%);
+
+            max-height: min(78vh, 720px);
+
+            display: flex;
+
+            flex-direction: column;
+
+            overflow: hidden;
+
+            background: rgba(25, 9, 15, 0.97);
+
+            border: 1px solid rgba(240, 126, 151, 0.48);
+
+            border-radius: 20px;
+
+            box-shadow:
+
+                0 30px 100px rgba(0, 0, 0, 0.65),
+
+                0 0 45px rgba(143, 16, 40, 0.15);
+
+            animation: modalAppear 0.25s ease both;
+
+        }
+
+        @keyframes modalAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(12px) scale(0.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0) scale(1);
+
+            }
+
+        }
+
+        .modal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding: 22px 24px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: rgba(100, 12, 35, 0.23);
+
+        }
+
+        .modal-heading {
+
+            min-width: 0;
+
+        }
+
+        .modal-heading .eyebrow {
+
+            font-size: 9px;
+
+            letter-spacing: 2.5px;
+
+        }
+
+        .modal-heading h2 {
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: 29px;
+
+            font-weight: 600;
+
+            margin: 6px 0 0;
+
+        }
+
+        .modal-close {
+
+            display: grid;
+
+            place-items: center;
+
+            width: 40px;
+
+            height: 40px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(255, 157, 177, 0.30);
+
+            border-radius: 50%;
+
+            background: rgba(129, 17, 44, 0.38);
+
+            color: #fff1f2;
+
+            font-size: 25px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition: background 0.2s, transform 0.2s;
+
+        }
+
+        .modal-close:hover {
+
+            background: #a31b3b;
+
+            transform: rotate(90deg);
+
+        }
+
+        .modal-body {
+
+            padding: 23px 24px 25px;
+
+            overflow-y: auto;
+
+        }
+
+        .modal-description {
+
+            color: #e0cdd0;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+            margin-bottom: 17px;
+
+        }
+
+        .terminal-window {
+
+            border: 1px solid rgba(231, 158, 172, 0.22);
+
+            border-radius: 13px;
+
+            overflow: hidden;
+
+            background: #0d080a;
+
+        }
+
+        .terminal-bar {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 12px 15px;
+
+            background: #211015;
+
+            border-bottom: 1px solid rgba(231, 158, 172, 0.16);
+
+        }
+
+        .terminal-dot {
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 50%;
+
+        }
+
+        .terminal-dot.red {
+
+            background: #f06c79;
+
+        }
+
+        .terminal-dot.yellow {
+
+            background: #d7ae68;
+
+        }
+
+        .terminal-dot.green {
+
+            background: #8eb97b;
+
+        }
+
+        .terminal-label {
+
+            margin-left: 6px;
+
+            color: #c7aeb4;
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+        }
+
+        .terminal-output {
+
+            margin: 0;
+
+            padding: 19px;
+
+            max-height: 45vh;
+
+            overflow: auto;
+
+            color: #f0dfe2;
+
+            font-family: Consolas, "Courier New", monospace;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+
+            scrollbar-color: #7c3045 #160b0f;
+
+        }
+
+        .modal-footer {
+
+            margin-top: 16px;
+
+            color: #cbb3b9;
+
+            font-size: 10px;
+
+            line-height: 1.8;
+
+        }
+
+        body.modal-open {
+
+            overflow: hidden;
+
+        }
+
+        @media (max-width: 760px) {
+
+            main {
+
+                padding: 30px 15px 50px;
+
+            }
+
+            .main-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .panel {
+
+                padding: 23px;
+
+            }
+
+            .how-it-works {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .hero {
+
+                padding: 30px 18px 25px;
+
+            }
+
+            .hero h1 {
+
+                font-size: 53px;
+
+            }
+
+            .nav-tag {
+
+                font-size: 8px;
+
+                letter-spacing: 1px;
+
+            }
+
+            .report-modal {
+
+                padding: 12px;
+
+            }
+
+            .modal-header {
+
+                padding: 18px;
+
+            }
+
+            .modal-body {
+
+                padding: 18px;
+
+            }
+
+            .terminal-output {
+
+                font-size: 11px;
+
+                padding: 14px;
+
+            }
+
+        }
+
+        @media (max-width: 420px) {
+
+            .brand {
+
+                font-size: 14px;
+
+                gap: 8px;
+
+            }
+
+            .brand-logo {
+
+                width: 38px;
+
+                height: 38px;
+
+            }
+
+            .nav-tag {
+
+                max-width: 130px;
+
+                line-height: 1.7;
+
+            }
+
+            .stats-grid {
+
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *, *::before, *::after {
+
+                scroll-behavior: auto !important;
+
+                animation: none !important;
+
+                transition: none !important;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="/" class="brand">
+
+        <img
+
+            src="{% static '/detector/images/logo.png' %}"
+
+            alt="DeepTrace logo"
+
+            class="brand-logo"
+
+        >
+
+        <span>DEEPTRACE</span>
+
+    </a>
+
+    <div class="nav-tag">EXPLAINABLE AI · VIDEO INTELLIGENCE</div>
+
+{% if user.is_authenticated %}
+    <div class="nav-right">
+    <!-- Profile -->
+    <div class="profile">
+        <span class="profile-initial">{{ request.user.username|first|upper }}</span>
+    </div>
+
+    <!-- Logout -->
+    <form action="{% url 'logout' %}" method="post" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+</div>
+{% else %}
+    <a href="{% url 'signin' %}" class="signin-btn">Sign In</a>
+{% endif %}
+
+</header>
+
+<main>
+
+    <section class="hero glass-card">
+
+        <div class="eyebrow">Truth, beneath the surface</div>
+
+        <h1>Look closer.<br><span>Trust wisely.</span></h1>
+
+        <p class="hero-description">
+
+            An AI-powered exploration of video authenticity.
+
+            Analyze facial frames, review model scores, and understand
+
+            what your video analysis reveals.
+
+        </p>
+
+        <div class="divider-flower">✿</div>
+
+    </section>
+
+    <div class="main-grid">
+
+        <section class="panel">
+
+            <div class="eyebrow">01 — Start analysis</div>
+
+            <h2 class="section-heading">Uncover the details.</h2>
+
+            <p class="section-description">
+
+                Upload a video and let DeepTrace examine sampled frames
+
+                and detected faces using its trained AI model.
+
+            </p>
+
+            {% if error %}
+
+                <div class="message error-message">{{ error }}</div>
+
+            {% endif %}
+
+            {% if message %}
+
+                <div class="message success-message">{{ message }}</div>
+
+            {% endif %}
+
+            <form id="upload-form"
+
+                  action="{% url 'analyze_video' %}"
+
+                  method="post"
+
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="upload-zone">
+
+                    <div class="upload-symbol">↑</div>
+
+                    <h3>Choose your video</h3>
+
+                    <p>MP4, AVI, MOV or MKV</p>
+
+                    <input
+
+                        id="video-input"
+
+                        class="file-input"
+
+                        type="file"
+
+                        name="video"
+
+                        accept=".mp4,.avi,.mov,.mkv"
+
+                        required
+
+                    >
+
+                    <p id="file-name">No video selected yet</p>
+
+                </div>
+
+                <button id="submit-button" class="primary-button" type="submit">
+
+                    ✦ &nbsp; Analyze Video
+
+                </button>
+
+            </form>
+
+            <p class="privacy-note">
+
+                Your model's verdict is experimental. AI can make mistakes;
+
+                this result should not be treated as proof of authenticity.
+
+            </p>
+
+        </section>
+
+        <section class="panel">
+
+            <div class="eyebrow">02 — Intelligence report</div>
+
+            <h2 class="section-heading">Your results.</h2>
+
+            <p class="section-description">
+
+                Your prediction and analysis statistics appear here
+
+                after the model finishes processing.
+
+            </p>
+
+            {% if prediction %}
+
+                <div class="result-panel">
+
+                    <div class="result-top">
+
+                        <span class="status-pill">
+
+                            <span class="status-dot"></span>
+
+                            ANALYSIS COMPLETE
+
+                        </span>
+
+                        <span class="nav-tag">MODEL REPORT</span>
+
+                    </div>
+
+                    {% if prediction == "FAKE" %}
+
+                        <div class="verdict fake">
+
+                            <div class="verdict-symbol">◈</div>
+
+                            <h2>Potential Fake</h2>
+
+                            <p>
+
+                                The model classified this video as potentially manipulated.
+
+                                Further verification is recommended.
+
+                            </p>
+
+                        </div>
+
+                    {% elif prediction == "REAL" %}
+
+                        <div class="verdict">
+
+                            <div class="verdict-symbol">❋</div>
+
+                            <h2>Likely Real</h2>
+
+                            <p>
+
+                                The model classified this video as likely real.
+
+                                This does not guarantee authenticity.
+
+                            </p>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="verdict fake">
+
+                            <h2>Result unavailable</h2>
+
+                            <p>The model did not return a recognized prediction.</p>
+
+                        </div>
+
+                    {% endif %}
+
+                    <h3 class="metric-title">Model score distribution</h3>
+
+                    <div class="score-row">
+
+                        <div class="score-label">
+
+                            <span>Manipulation score</span>
+
+                            <strong>
+
+                                {% if fake_score != None %}{{ fake_score }}%{% else %}N/A{% endif %}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-track">
+
+                            <div class="progress-fill fake-fill"
+
+                                 data-score="{{ fake_score|default:'0' }}"
+
+                                 id="fake-bar"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="score-row">
+
+                        <div class="score-label">
+
+                            <span>Real score</span>
+
+                            <strong>
+
+                                {% if real_score != None %}{{ real_score }}%{% else %}N/A{% endif %}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-track">
+
+                            <div class="progress-fill real-fill"
+
+                                 data-score="{{ real_score|default:'0' }}"
+
+                                 id="real-bar"></div>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="metric-title">Video breakdown</h3>
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+
+                            <span>Frames sampled</span>
+
+                            <strong>{{ sampled_frames|default:"—" }}</strong>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <span>Faces analyzed</span>
+
+                            <strong>{{ faces_analyzed|default:"—" }}</strong>
+
+                        </div>
+
+                    </div>
+
+                    {% if analysis_output %}
+                        <button
+                            type="button"
+                            class="terminal-toggle-button"
+                            id="show-terminal-output"
+                            aria-haspopup="dialog"
+                            aria-controls="report-modal"
+                        >
+                            Show CMD Prompt Output
+                        </button>
+                    {% endif %}
+
+                    
+
+                </div>
+
+            {% else %}
+
+                <div class="verdict" style="margin-top: 25px;">
+
+                    <div class="verdict-symbol">❀</div>
+
+                    <h2 style="color: #e6a4b1;">Awaiting a video</h2>
+
+                    <p>
+
+                        Your analysis report will appear here after
+
+                        you upload a video and run the model.
+
+                    </p>
+
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <span>Detection engine</span>
+
+                        <strong style="font-size: 23px;">EfficientNet</strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>Face detection</span>
+
+                        <strong style="font-size: 23px;">YuNet</strong>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+    <section class="how-it-works">
+
+        <div class="step-card">
+
+            <div class="step-number">01</div>
+
+            <h3>Upload</h3>
+
+            <p>Choose a supported video file for analysis.</p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">02</div>
+
+            <h3>Examine</h3>
+
+            <p>YuNet detects faces and EfficientNet classifies face crops.</p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">03</div>
+
+            <h3>Understand</h3>
+
+            <p>Review the prediction and model scores with appropriate caution.</p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+
+    <div>DEEPTRACE · EXPLAINABLE AI DEEPFAKE DETECTION</div>
+
+    Experimental research prototype. Model scores are not calibrated probabilities
+
+    and cannot independently establish whether a video is authentic.
+
+</footer>
+
+<!-- Centered model-output popup; shown after analysis output is available -->
+
+{% if analysis_output %}
+
+<div
+
+    class="report-modal"
+
+    id="report-modal"
+    hidden
+
+    role="dialog"
+
+    aria-modal="true"
+
+    aria-labelledby="modal-title"
+
+>
+
+    <section class="report-modal-card">
+
+        <header class="modal-header">
+
+            <div class="modal-heading">
+
+                <div class="eyebrow">DeepTrace · Analysis complete</div>
+
+                <h2 id="modal-title">Video Analysis Report</h2>
+
+            </div>
+
+            <button
+
+                type="button"
+
+                class="modal-close"
+
+                id="modal-close"
+
+                aria-label="Close analysis report"
+
+                title="Close"
+
+            >×</button>
+
+        </header>
+
+        <div class="modal-body">
+
+            <p class="modal-description">
+
+                Your model's terminal output is shown below.
+
+                Close this window to return to the dashboard.
+
+            </p>
+
+            <div class="terminal-window">
+
+                <div class="terminal-bar">
+
+                    <span class="terminal-dot red"></span>
+
+                    <span class="terminal-dot yellow"></span>
+
+                    <span class="terminal-dot green"></span>
+
+                    <span class="terminal-label">DEEPTRACE — MODEL OUTPUT</span>
+
+                </div>
+
+                <pre class="terminal-output">{{ analysis_output }}</pre>
+
+            </div>
+
+            <p class="modal-footer">
+
+                Experimental AI result only. The prediction does not prove
+
+                whether a video is authentic or manipulated.
+
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endif %}
+
+<script>
+
+    const videoInput = document.getElementById("video-input");
+
+    const fileName = document.getElementById("file-name");
+
+    const uploadForm = document.getElementById("upload-form");
+
+    const submitButton = document.getElementById("submit-button");
+
+    if (videoInput && fileName) {
+
+        videoInput.addEventListener("change", function () {
+
+            fileName.textContent = this.files.length
+
+                ? this.files[0].name
+
+                : "No video selected yet";
+
+        });
+
+    }
+
+    if (uploadForm && submitButton) {
+
+        uploadForm.addEventListener("submit", function () {
+
+            if (!videoInput || !videoInput.files.length) return;
+
+            submitButton.disabled = true;
+
+            submitButton.textContent = "Analyzing video… Please wait";
+
+        });
+
+    }
+
+    function animateScore(id) {
+
+        const bar = document.getElementById(id);
+
+        if (!bar) return;
+
+        const value = Number.parseFloat(bar.dataset.score);
+
+        const safeValue = Number.isFinite(value)
+
+            ? Math.min(100, Math.max(0, value))
+
+            : 0;
+
+        requestAnimationFrame(() => {
+
+            bar.style.width = safeValue + "%";
+
+        });
+
+    }
+
+    animateScore("fake-bar");
+
+    animateScore("real-bar");
+
+    /* Show terminal output only when the user requests it. */
+    const reportModal = document.getElementById("report-modal");
+    const openModalButton = document.getElementById("show-terminal-output");
+    const closeModalButton = document.getElementById("modal-close");
+
+    function openReportModal() {
+        if (!reportModal) return;
+        reportModal.hidden = false;
+        document.body.classList.add("modal-open");
+
+        if (closeModalButton) {
+            closeModalButton.focus();
+        }
+    }
+
+    function closeReportModal() {
+        if (!reportModal) return;
+        reportModal.hidden = true;
+        document.body.classList.remove("modal-open");
+
+        if (openModalButton) {
+            openModalButton.focus();
+        }
+    }
+
+    if (reportModal) {
+        if (openModalButton) {
+            openModalButton.addEventListener("click", openReportModal);
+        }
+
+        if (closeModalButton) {
+            closeModalButton.addEventListener("click", closeReportModal);
+        }
+
+        reportModal.addEventListener("click", function (event) {
+            if (event.target === reportModal) {
+                closeReportModal();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && !reportModal.hidden) {
+                closeReportModal();
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

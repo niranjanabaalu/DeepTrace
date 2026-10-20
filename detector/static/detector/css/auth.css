@@ -1,0 +1,261 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  --wine: #6f2038;
+  --wine-light: #9f435a;
+  --cream: #fff7f3;
+  --muted: #c9b8bc;
+  --glass: rgba(35, 13, 23, 0.7);
+  --border: rgba(255, 231, 232, 0.17);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--cream);
+  background: #1c1017;
+  font-family: "DM Sans", sans-serif;
+}
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* Left half: floral background and branding */
+.brand-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(35px, 7vw, 95px);
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(30, 9, 20, 0.7), rgba(91, 22, 45, 0.52)),
+    url("../images/floral-background.png") center / cover no-repeat,
+    #48182c;
+}
+
+.brand-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(25, 8, 17, 0.45), transparent 70%);
+  pointer-events: none;
+}
+
+.brand-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.eyebrow {
+  color: #e6a6b3;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.brand-panel h1 {
+  margin: 12px 0 20px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  line-height: 0.98;
+  font-weight: 500;
+}
+
+.brand-description {
+  max-width: 410px;
+  color: #f0dfe2;
+  font-size: 0.98rem;
+  line-height: 1.9;
+}
+
+.brand-tag {
+  margin-top: 38px;
+  color: #e6a6b3;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+}
+
+/* Right half: translucent authentication card */
+.form-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 24px;
+  background:
+    radial-gradient(
+      circle at 80% 15%,
+      rgba(119, 42, 67, 0.25),
+      transparent 40%
+    ),
+    #1c1017;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: clamp(26px, 4vw, 44px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--glass);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.auth-card h2 {
+  margin: 8px 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+}
+
+.form-subtitle {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-card label {
+  margin: 15px 0 8px;
+  color: #f3e6e8;
+  font-size: 0.85rem;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 13px 14px;
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+  font: inherit;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.auth-card input:focus {
+  border-color: #d78498;
+  box-shadow: 0 0 0 3px rgba(215, 132, 152, 0.12);
+}
+
+.auth-button {
+  margin-top: 26px;
+  padding: 14px;
+  border: none;
+  border-radius: 9px;
+  color: white;
+  background: linear-gradient(110deg, var(--wine), var(--wine-light));
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    filter 0.2s;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+}
+
+.switch-text {
+  margin-top: 24px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.86rem;
+}
+
+.switch-text a,
+.back-link {
+  color: #e6a6b3;
+  text-decoration: none;
+}
+
+.switch-text a {
+  font-weight: 700;
+}
+
+.switch-text a:hover,
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: block;
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.form-errors,
+.message {
+  margin: 10px 0;
+  color: #ffb8c4;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.form-errors ul {
+  padding-left: 20px;
+}
+
+/* Mobile layout */
+@media (max-width: 800px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-panel {
+    min-height: 280px;
+    padding: 32px 28px;
+  }
+
+  .brand-logo {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 12px;
+  }
+
+  .brand-panel h1 {
+    font-size: 3rem;
+  }
+
+  .brand-description {
+    max-width: 500px;
+  }
+
+  .brand-tag {
+    margin-top: 16px;
+  }
+
+  .form-panel {
+    padding: 28px 18px 40px;
+  }
+}

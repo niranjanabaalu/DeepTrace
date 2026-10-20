@@ -1,0 +1,65 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | DeepTrace</title>
+    <link rel="stylesheet" href="{% static 'detector/css/auth.css' %}">
+</head>
+<body>
+<div class="auth-layout">
+    <section class="brand-panel">
+        <img src="{% static 'detector/images/logo.png' %}"
+             alt="DeepTrace Logo" class="brand-logo">
+        <p class="eyebrow">AI-POWERED VIDEO ANALYSIS</p>
+        <h1>See beyond<br>what you see.</h1>
+        <p class="brand-description">
+            Welcome back to DeepTrace — explore video authenticity
+            through intelligent deepfake detection.
+        </p>
+        <span class="brand-tag">TRUTH, EXPLAINED.</span>
+    </section>
+
+    <main class="form-panel">
+        <div class="auth-card">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>Sign in</h2>
+            <p class="form-subtitle">Enter your details to continue.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="{% url 'signin' %}">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username"
+                       autocomplete="username" required>
+
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password"
+                       autocomplete="current-password" required>
+
+                <button type="submit" class="auth-button">Sign In</button>
+            </form>
+
+            <p class="switch-text">
+                Don't have an account?
+                <a href="{% url 'signup' %}">Create one</a>
+            </p>
+
+            <a href="/" class="back-link">← Back to DeepTrace</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>
